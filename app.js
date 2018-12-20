@@ -1,9 +1,4 @@
-//  Just to check if the app started
-console.log("Starting App");
-
-// Third party
 const fs = require('fs');
-const _ = require('lodash');
 //Yargs makes it easy to use key-value pairs arguments on the command line
 const yargs = require('yargs');
 
@@ -12,24 +7,41 @@ const notes = require('./notes.js');
 
 var argv = yargs.argv;
 var command = argv._[0];
-//Print the command
-console.log("Command:", command);
-
-console.log('Process', process.argv);
-console.log('Yargs', argv);
 
 if( command === 'add'){
     console.log('Adding new note');
-    notes.addNote(argv.title, argv.body);
+   var note =  notes.addNote(argv.title, argv.body);
+   // Check of note was saved
+
+   if (note){
+       console.log("Note was created....");
+       notes.logNote(note);
+   } else{
+       console.log("Note title is a duplicate! Try another title....")
+   }
 } else if (command === 'list'){
     console.log('Listing all notes');
-    notes.getAll();
+    var allNotes = notes.getAll();
+    console.log(`printing ${allNotes.length} note(s)...`);
+
+    //Print all notes
+
+    allNotes.forEach((note) => notes.logNote(note));
 } else if(command === 'read'){
     console.log('fetching note...')
-    notes.getNote(argv.title);
+    var note = notes.getNote(argv.title);
+    if(note){
+        notes.logNote(note);
+    }else{
+        console.log("Note not found"); 
+    }
+    
 } else if(command === 'remove'){
     console.log('removing note...')
-    notes.removeNote(argv.title);
+    
+   var noteRemoved = notes.removeNote(argv.title);
+   var message = noteRemoved ? 'Note Removed' : 'Note not found';
+   console.log(message);
 } else {
     console.log('Command not recognised');
 }
