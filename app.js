@@ -5,7 +5,33 @@ const yargs = require('yargs');
 // My files
 const notes = require('./notes.js');
 
-var argv = yargs.argv;
+const titleOptions = {
+    describe: "Title of the note",
+    demand: true,
+    alias: "t"
+};
+
+const bodyOptions = {
+    describe: "Body info",
+    demand: true,
+    alias: "b"
+};
+
+var argv = yargs
+.command("add", "Add a Note", {
+    title: titleOptions,
+    body: bodyOptions
+}
+)
+.command("list", "List all Notes")
+.command("read", "Read all Notes", {
+    title: titleOptions
+})
+.command("remove", "Remove all a Note", {
+    title: titleOptions
+})
+.help()
+.argv;
 var command = argv._[0];
 
 if( command === 'add'){
@@ -40,7 +66,7 @@ if( command === 'add'){
     console.log('removing note...')
     
    var noteRemoved = notes.removeNote(argv.title);
-   var message = noteRemoved ? 'Note Removed' : 'Note not found';
+   var message = noteRemoved ? 'Note Removed' : 'Note not found!';
    console.log(message);
 } else {
     console.log('Command not recognised');

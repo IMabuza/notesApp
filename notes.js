@@ -59,9 +59,7 @@ var getNote = (title) => {
     var notes = fetchNotes();
     // Filter and return only the note required
     var fetchedNote = notes.filter((note) => note.title === title);
-        return fetchedNote[0];
-    
-    
+        return fetchedNote[0]; 
 }
 
 var removeNote = (title) =>{
